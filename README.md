@@ -19,7 +19,7 @@ A ECO utiliza um **algoritmo de busca binária** para reduzir progressivamente o
 
 - **Luiz Gabriel Leli Pereira**
 
-> Projeto acadêmico desenvolvido para a disciplina de Desenvolvimento Mobile — IFSP.
+> Projeto acadêmico desenvolvido para a disciplina de Aplicativos Móveis — IFSP Campus Araraquara.
 
 ## Tecnologias
 
@@ -108,7 +108,7 @@ EcoCodigoPerdido/
 │   ├── images/
 │   │   └── bg.png                  # Imagem de fundo (circuitos digitais)
 │   └── sounds/
-│       └── success.mp3             # Som de vitória (opcional)
+│       └── sucess.mp3              # Som de vitória
 └── app.json                        # Configuração do Expo
 ```
 

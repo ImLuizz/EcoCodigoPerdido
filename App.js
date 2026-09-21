@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, ImageBackground, View, Text } from 'react-native';
+import { StyleSheet, ImageBackground, View, Text, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
@@ -21,6 +21,7 @@ import {
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import GameOverScreen from './screens/GameOverScreen';
+import EvilGameScreen from './screens/EvilGameScreen';
 
 // Constantes
 import Colors from './constants/Colors';
@@ -29,6 +30,7 @@ import Colors from './constants/Colors';
 SplashScreen.preventAutoHideAsync();
 
 const RECORDE_KEY = 'eco_recorde';
+const EASTER_EGG_CODES = [67, 42];
 
 export default function App() {
   // Estados globais de navegação
@@ -38,6 +40,7 @@ export default function App() {
   const [dificuldade, setDificuldade] = useState('medio');
   const [recorde, setRecorde] = useState(null); // null = sem recorde ainda
   const [novoRecorde, setNovoRecorde] = useState(false);
+  const [evilMode, setEvilMode] = useState(false); // Easter egg: modo MAL
 
   // Carrega fontes personalizadas
   const [fontsLoaded] = useFonts({
@@ -76,8 +79,25 @@ export default function App() {
 
   // Handler: usuário escolheu um número na StartGameScreen
   function pickedNumberHandler(numero, dificuldadeSelecionada) {
+    // Easter egg: códigos 67 ou 42 ativam o modo MAL
+    if (EASTER_EGG_CODES.includes(numero)) {
+      setDificuldade(dificuldadeSelecionada);
+      setEvilMode(true);
+      setNumeroSecreto(-1); // marcador para indicar jogo ativo
+      setGameIsOver(false);
+
+      // Alerta dramático
+      Alert.alert(
+        '⚠️ ANOMALIA DETECTADA',
+        'Código proibido inserido.\n\nA ECO odeia esse número.\nAgora é VOCÊ quem deve adivinhar o código que ela escolheu.\n\nBoa sorte, humano...',
+        [{ text: 'ACEITAR DESAFIO', style: 'destructive' }]
+      );
+      return;
+    }
+
     setNumeroSecreto(numero);
     setDificuldade(dificuldadeSelecionada);
+    setEvilMode(false);
     setGameIsOver(false);
   }
 
@@ -107,12 +127,21 @@ export default function App() {
     setGameIsOver(false);
     setTotalTentativas(0);
     setNovoRecorde(false);
+    setEvilMode(false);
   }
 
   // Navegação por estado — determina qual tela renderizar
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
-  if (numeroSecreto !== null && !gameIsOver) {
+  if (numeroSecreto !== null && !gameIsOver && evilMode) {
+    // Easter egg: modo MAL — usuário adivinha o número da ECO
+    screen = (
+      <EvilGameScreen
+        dificuldade={dificuldade}
+        onGameOver={gameOverHandler}
+      />
+    );
+  } else if (numeroSecreto !== null && !gameIsOver) {
     screen = (
       <GameScreen
         numeroSecreto={numeroSecreto}
@@ -125,7 +154,7 @@ export default function App() {
   if (gameIsOver) {
     screen = (
       <GameOverScreen
-        codigo={numeroSecreto}
+        codigo={evilMode ? '???' : numeroSecreto}
         tentativas={totalTentativas}
         recorde={recorde}
         novoRecorde={novoRecorde}
@@ -172,3 +201,4 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 });
+

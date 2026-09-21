@@ -8,6 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { useAudioPlayer } from 'expo-audio';
 import Colors from '../constants/Colors';
 import Title from '../components/ui/Title';
 import Card from '../components/ui/Card';
@@ -23,6 +24,8 @@ function GameOverScreen({
   novoRecorde,
   onStartNewGame,
 }) {
+  const player = useAudioPlayer(require('../assets/sounds/sucess.mp3'));
+
   // Animações
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -30,6 +33,13 @@ function GameOverScreen({
   const starsAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // Toca o som de vitória
+    try {
+      player.play();
+    } catch (error) {
+      console.log('Erro ao tocar som de vitória:', error);
+    }
+
     // Vibração/haptic feedback de vitória
     if (Platform.OS === 'ios') {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

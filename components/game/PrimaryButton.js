@@ -1,9 +1,25 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { useAudioPlayer } from 'expo-audio';
 import Colors from '../../constants/Colors';
 
 // Botão principal reutilizável: View > Pressable > Text
 // android_ripple, opacity feedback no iOS, overflow hidden, elevation
+// Som de clique a cada pressionamento
 function PrimaryButton({ children, onPress, style, textStyle }) {
+  const clickPlayer = useAudioPlayer(require('../../assets/sounds/click.mp3'));
+
+  function handlePress() {
+    try {
+      clickPlayer.seekTo(0);
+      clickPlayer.play();
+    } catch (error) {
+      console.log('Erro ao tocar som de clique:', error);
+    }
+    if (onPress) {
+      onPress();
+    }
+  }
+
   return (
     <View style={[styles.outerContainer, style]}>
       <Pressable
@@ -11,7 +27,7 @@ function PrimaryButton({ children, onPress, style, textStyle }) {
           styles.pressable,
           pressed && styles.pressed,
         ]}
-        onPress={onPress}
+        onPress={handlePress}
         android_ripple={{ color: Colors.principalEscura }}
       >
         <Text style={[styles.text, textStyle]}>{children}</Text>
