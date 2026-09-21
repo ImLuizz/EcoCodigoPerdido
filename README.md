@@ -31,7 +31,7 @@ A ECO utiliza um **algoritmo de busca binária** para reduzir progressivamente o
 | AsyncStorage | Persistência do recorde |
 | Expo Font | Fontes personalizadas (Orbitron, Inter) |
 | Expo Haptics | Vibração/feedback tátil |
-| Expo Audio | Som de confirmação |
+| Expo Audio | Efeitos sonoros (clique e vitória) |
 | Expo Linear Gradient | Gradiente de fundo |
 
 ## Pré-requisitos
@@ -90,7 +90,8 @@ EcoCodigoPerdido/
 ├── screens/
 │   ├── StartGameScreen.js          # Tela inicial (entrada + dificuldade)
 │   ├── GameScreen.js               # Tela do jogo (busca binária)
-│   └── GameOverScreen.js           # Tela de vitória (resultado + animação)
+│   ├── GameOverScreen.js           # Tela de vitória (resultado + animação)
+│   └── EvilGameScreen.js           # Easter egg — Modo ??? (jogo invertido)
 ├── components/
 │   ├── ui/
 │   │   ├── Title.js                # Título reutilizável (props.children)
@@ -98,7 +99,7 @@ EcoCodigoPerdido/
 │   │   ├── NumberContainer.js      # Exibição de número em destaque
 │   │   └── ButtonsContainer.js     # Container horizontal para botões
 │   └── game/
-│       ├── PrimaryButton.js        # Botão principal (Pressable + ripple)
+│       ├── PrimaryButton.js        # Botão principal (Pressable + ripple + som)
 │       ├── GuessLogItem.js         # Item do histórico de tentativas
 │       ├── DifficultySelector.js   # Seletor de dificuldade (3 modos)
 │       └── StarRating.js           # Sistema de estrelas (avaliação)
@@ -108,6 +109,7 @@ EcoCodigoPerdido/
 │   ├── images/
 │   │   └── bg.png                  # Imagem de fundo (circuitos digitais)
 │   └── sounds/
+│       ├── click.mp3               # Som de clique nos botões
 │       └── sucess.mp3              # Som de vitória
 └── app.json                        # Configuração do Expo
 ```
@@ -123,11 +125,31 @@ EcoCodigoPerdido/
 - ✅ Recorde da sessão com persistência (AsyncStorage)
 - ✅ Animações de vitória (Animated API)
 - ✅ Vibração/haptic feedback
+- ✅ Efeitos sonoros (clique e vitória)
 - ✅ Representação visual do intervalo de busca
 - ✅ Fontes personalizadas (Orbitron + Inter)
 - ✅ Tema escuro futurista/tecnológico
 - ✅ Componentes reutilizáveis
 
-## Screenshot
+## Screenshots
 
-> Adicionar imagem do aplicativo funcionando. (implementação)
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><strong>Tela Inicial</strong></td>
+      <td align="center"><strong>Jogo em Andamento</strong></td>
+    </tr>
+    <tr>
+      <td><img src="https://i.imgur.com/mGFsDf5.png" width="280" alt="Tela Inicial" /></td>
+      <td><img src="https://i.imgur.com/T3qlEp5.png" width="280" alt="Jogo em Andamento - o palpite é 54" /></td>
+    </tr>
+    <tr>
+      <td align="center"><strong>Usuário adiciona uma informação inconstante no palpite</strong></td>
+      <td align="center"><strong>Tela de vitória</strong></td>
+    </tr>
+    <tr>
+      <td><img src="https://i.imgur.com/GeBwaEQ.png" width="280" alt="Tela de Vitória" /></td>
+      <td><img src="https://i.imgur.com/2YeSkNa.png" width="280" alt="Easter Egg — Modo ???" /></td>
+    </tr>
+  </table>
+</div>
